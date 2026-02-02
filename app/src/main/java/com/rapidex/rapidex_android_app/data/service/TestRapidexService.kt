@@ -87,12 +87,18 @@ class TestRapidexService: RapidexService {
         Order(id = 4, products = listOf(products[7], products[2], products[5])),
     )
 
-    override fun getPendingOrders(): List<Order> {
+    override suspend fun getAllOrders(): List<Order> {
+        return orders.toList()
+    }
+    override suspend fun getPendingOrders(): List<Order> {
         return orders.filter { it.preparationDate == null }
+    }
+    override suspend fun getClaimedOrders(employeeId: Int): List<Order> {
+        return orders.filter { it.employee?.id == employeeId }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun claimOrder(orderId: Int, employeeId: Int) {
+    override suspend fun claimOrder(orderId: Int, employeeId: Int) {
         var order = orders.find { it.id == orderId }
         if (order == null) throw IOException("Order not found")
 
@@ -105,7 +111,7 @@ class TestRapidexService: RapidexService {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun orderDone(orderId: Int) {
+    override suspend fun orderDone(orderId: Int) {
         var order = orders.find{it.id == orderId}
         if (order == null) throw IOException("Order not found")
 
@@ -114,9 +120,9 @@ class TestRapidexService: RapidexService {
         orders.add(order)
     }
 
-    override fun sendIncident(type: IncidentType, description: String) {}
+    override suspend fun sendIncident(type: IncidentType, description: String, orderId: Int) {}
 
-    override fun login(username: String, password: String): Employee? {
+    override suspend fun login(username: String, password: String): Employee? {
         return employees.find { it.username == username && it.password == password}
     }
 }

@@ -1,10 +1,8 @@
-package com.rapidex.rapidex_android_app.data.service
+package com.rapidex.rapidex_android_app.domain
 
-import com.rapidex.rapidex_android_app.data.model.Employee
-import com.rapidex.rapidex_android_app.data.model.IncidentType
 import com.rapidex.rapidex_android_app.data.model.Order
 
-interface RapidexService {
+interface OrderRepository {
     /**
      * Gets all orders
      * @throws java.io.IOException on network error
@@ -34,17 +32,4 @@ interface RapidexService {
      * @throws java.io.IOException on network error
      */
     suspend fun orderDone(orderId: Int)
-
-    /**
-     * Sends an incident to the datacenter
-     * @throws java.io.IOException on network error
-     */
-    suspend fun sendIncident(type: IncidentType, description: String, orderId: Int)
-
-    /**
-     * This function does a login attempt.
-     * @return An `Employee` object on successful login and `null` on incorrect credentials
-     * @throws java.io.IOException on network error
-     */
-    suspend fun login(username: String, password: String): Employee?
 }
