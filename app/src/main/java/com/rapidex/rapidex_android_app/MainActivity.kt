@@ -6,21 +6,20 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.RapidexTheme
-import com.rapidex.rapidex_android_app.ui.view_model.RapidexViewModel
-import com.rapidex.rapidex_android_app.ui.view_model.UiEvent
+import com.rapidex.rapidex_android_app.ui.login.LoginScreen
+import com.rapidex.rapidex_android_app.ui.main.MainScreen
+import com.rapidex.rapidex_android_app.ui.auth.AuthDestination
+import com.rapidex.rapidex_android_app.ui.auth.AuthViewModel
+import com.rapidex.rapidex_android_app.ui.auth.AuthUiEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,16 +31,33 @@ class MainActivity : ComponentActivity() {
             RapidexTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val context = LocalContext.current
-                    val viewModel: RapidexViewModel = hiltViewModel()
-                    val uiState by viewModel.uiState.collectAsState()
+                    val authViewModel: AuthViewModel = hiltViewModel()
+
+                    val navController = rememberNavController()
 
                     LaunchedEffect(Unit) {
-                        viewModel.events.collect { event ->
+                        authViewModel.events.collect { event ->
                             when (event) {
-                                is UiEvent.ShowToast -> {
-                                    Toast.makeText(context, event.message, Toast.LENGTH_LONG)
+                                is AuthUiEvent.ShowToast -> {
+                                    Toast.makeText(context, context.getString(event.stringRes), Toast.LENGTH_LONG).show()
+                                }
+                                is AuthUiEvent.Navigate -> {
+                                    navController.navigate(event.destination.route)
                                 }
                             }
+                        }
+                    }
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = AuthDestination.LOGIN.route
+                    ) {
+                        composable(AuthDestination.LOGIN.route){
+                            LoginScreen()
+                        }
+
+                        composable(AuthDestination.MAIN.route){
+                            MainScreen()
                         }
                     }
                 }

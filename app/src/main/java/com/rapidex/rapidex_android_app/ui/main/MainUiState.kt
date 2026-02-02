@@ -1,10 +1,10 @@
-package com.rapidex.rapidex_android_app.ui.view_model
+package com.rapidex.rapidex_android_app.ui.main
 
 import com.rapidex.rapidex_android_app.data.model.Employee
 import com.rapidex.rapidex_android_app.data.model.Order
 
-data class RapidexUiState (
-    val employee: Employee? = null,
+data class MainUiState (
+    val employee: Employee,
     val pendingOrders: List<Order> = emptyList(),
-    val activeOrders: List<Order> = emptyList()
+    val claimedOrders: List<Order> = emptyList()
 )
