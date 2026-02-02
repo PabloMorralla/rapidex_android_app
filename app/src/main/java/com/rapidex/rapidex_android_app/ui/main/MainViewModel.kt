@@ -3,13 +3,9 @@ package com.rapidex.rapidex_android_app.ui.main
 import androidx.lifecycle.ViewModel
 import com.rapidex.rapidex_android_app.R
 import com.rapidex.rapidex_android_app.data.model.IncidentType
-import com.rapidex.rapidex_android_app.data.service.RapidexService
-import com.rapidex.rapidex_android_app.domain.DefaultIncidentRepository
 import com.rapidex.rapidex_android_app.domain.EmployeeRepository
+import com.rapidex.rapidex_android_app.domain.IncidentRepository
 import com.rapidex.rapidex_android_app.domain.OrderRepository
-import com.rapidex.rapidex_android_app.ui.auth.AuthDestination
-import com.rapidex.rapidex_android_app.ui.auth.AuthUiState
-import com.rapidex.rapidex_android_app.ui.auth.AuthUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +20,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor (
     private val employeeRepository: EmployeeRepository,
     private val orderRepository: OrderRepository,
-    private val incidentRepository: DefaultIncidentRepository
+    private val incidentRepository: IncidentRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(MainUiState(employee = employeeRepository.employee!!)) // TODO Please, do not cast nullable type to not-nullable type without checking its value first :)
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
