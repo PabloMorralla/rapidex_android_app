@@ -1,8 +1,10 @@
 package com.rapidex.rapidex_android_app.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Product (
-    val id: Int,
-    val productName: String,
-    val productCategory: String,
-    val description: String? = null,
+    @SerializedName("id") val id: Int,
+    @SerializedName("productName") val name: String,
+    @SerializedName("productCategory") val category: String,
+    @SerializedName("productDescription") val description: String? = null,
 )
