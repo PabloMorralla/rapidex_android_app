@@ -1,4 +1,4 @@
-package com.rapidex.rapidex_android_app.ui.main
+package com.rapidex.rapidex_android_app.ui.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.rapidex.rapidex_android_app.R

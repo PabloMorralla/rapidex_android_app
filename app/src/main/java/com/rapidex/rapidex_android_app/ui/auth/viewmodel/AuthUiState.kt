@@ -1,4 +1,4 @@
-package com.rapidex.rapidex_android_app.ui.auth
+package com.rapidex.rapidex_android_app.ui.auth.viewmodel
 
 import com.rapidex.rapidex_android_app.data.model.Employee
 import com.rapidex.rapidex_android_app.data.model.Order

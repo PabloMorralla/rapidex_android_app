@@ -4,6 +4,10 @@
     <string name="unexpected_error">There was an unexpected error. Please contact your manager.</string>
 
     <!--LOGIN-->
+    <string name="login_title">Employee Login</string>
+    <string name="login_user_label">User</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_access_text">Access</string>
     <string name="login_successful">Login successful</string>
     <string name="invalid_credentials">Invalid Credentials</string>
 
