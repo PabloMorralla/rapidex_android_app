@@ -1,4 +1,4 @@
-package com.rapidex.rapidex_android_app.ui.auth
+package com.rapidex.rapidex_android_app.ui.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.rapidex.rapidex_android_app.R
@@ -19,12 +19,9 @@ class AuthViewModel @Inject constructor (
     suspend fun login(username: String, password: String){
         try {
             val employee = employeeRepository.login(username, password)
-            if (employee == null) {
-                _eventChannel.send(AuthUiEvent.ShowToast(R.string.invalid_credentials))
-            }
-            else {
-                _eventChannel.send(AuthUiEvent.Navigate(AuthDestination.MAIN))
-                _eventChannel.send(AuthUiEvent.ShowToast(R.string.login_successful))
+            when (employee) {
+                null -> _eventChannel.send(AuthUiEvent.ShowToast(R.string.invalid_credentials))
+                else -> _eventChannel.send(AuthUiEvent.GoToMainFlow)
             }
         }
         catch (e: IOException) {
