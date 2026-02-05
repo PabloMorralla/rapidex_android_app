@@ -1,6 +1,7 @@
 <resources>
     <!--APP-->
     <string name="app_name">Rapidex</string>
+    <string name="error_title">Error</string>
     <string name="unexpected_error">There was an unexpected error. Please contact your manager.</string>
 
     <!--LOGIN-->
@@ -12,15 +13,21 @@
     <string name="invalid_credentials">Invalid Credentials</string>
 
     <!--HOME-->
+    <string name="home_title">Orders</string>
+    <string name="home_pending_orders_label">Pending Orders</string>
+    <string name="home_claimed_orders_label">Claimed Orders</string>
+    <string name="order_id_format">ORD-%1$03d</string>
     <string name="success_claim_order">Order claimed successfully</string>
     <string name="error_loading_pending_orders">There was an unexpected error loading pending orders. Please contact your manager.</string>
     <string name="error_loading_claimed_orders">There was an unexpected error loading claimed orders. Please contact your manager.</string>
 
     <!--ORDER DETAILS-->
+    <string name="details_title">Order Details</string>
     <string name="success_order_done">Order was marked as done successfully</string>
     <string name="error_order_done">There was an unexpected error marking the order as done. Please contact your manager.</string>
 
     <!--SEND INCIDENT-->
+    <string name="incident_title">Send an Incident</string>
     <string name="success_send_incident">Incident was sent successfully and you were deassigned from the order</string>
     <string name="error_send_incident">There was an unexpected error sending the incident. Please contact your manager.</string>
 </resources>

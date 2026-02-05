@@ -80,8 +80,8 @@ class TestRapidexService: RapidexService {
         )
     )
     private val orders = mutableListOf(
-        Order(id = 0, products = listOf(products[0], products[5], products[2])),
-        Order(id = 1, products = listOf(products[3], products[7], products[4])),
+        Order(id = 0, employee = employees[0], products = listOf(products[0], products[5], products[2])),
+        Order(id = 1, employee = employees[0], products = listOf(products[3], products[7], products[4])),
         Order(id = 2, products = listOf(products[9], products[6], products[3])),
         Order(id = 3, products = listOf(products[8], products[1], products[5])),
         Order(id = 4, products = listOf(products[7], products[2], products[5])),

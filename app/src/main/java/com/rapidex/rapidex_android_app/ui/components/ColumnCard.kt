@@ -18,11 +18,11 @@ import com.rapidex.rapidex_android_app.R
 
 @Composable
 fun ColumnCard(
+    modifier: Modifier = Modifier,
     content: @Composable ()->Unit
 ){
     Card(
-        modifier = Modifier
-            .padding(25.dp)
+        modifier = modifier
             .fillMaxWidth()
     ) {
         Column(
