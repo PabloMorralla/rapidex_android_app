@@ -73,13 +73,9 @@ fun HomeScreen(
                 OrderCard(
                     modifier = Modifier
                         .padding(bottom = 25.dp)
-                        .clickable{onSelectOrder(order.id)}
-                        .border(
-                            width = if (isSelected) 3.dp else 0.dp,
-                            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    order = order
+                        .clickable{onSelectOrder(order.id)},
+                    order = order,
+                    isSelected = isSelected
                 )
             }
         }
@@ -105,13 +101,9 @@ fun HomeScreen(
                         .clickable{
                             onSelectOrder(order.id)
                             showClaimOrderDialog = true
-                        }
-                        .border(
-                            width = if (isSelected) 3.dp else 0.dp,
-                            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    order = order
+                        },
+                    order = order,
+                    isSelected = isSelected
                 )
             }
         }
