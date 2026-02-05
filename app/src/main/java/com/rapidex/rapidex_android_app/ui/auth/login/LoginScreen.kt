@@ -35,58 +35,49 @@ import com.rapidex.rapidex_android_app.ui.components.RapidexTopAppBar
 
 @Composable
 fun LoginScreen (
+    modifier: Modifier = Modifier,
     onLogin: (String, String) -> Unit
 ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            RapidexTopAppBar(
-                title = stringResource(R.string.login_title),
-                canNavigateBack = false,
-                onBackNavigate = {}
-            )
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        ColumnCard (
+            modifier = Modifier.padding(25.dp)
         ) {
-            ColumnCard {
 
-                PrimaryTextField(
-                    modifier = Modifier.padding(bottom = 25.dp),
-                    value = username,
-                    onValueChange = { username = it },
-                    label = stringResource(R.string.login_user_label),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
-                    )
+            PrimaryTextField(
+                modifier = Modifier.padding(bottom = 25.dp),
+                value = username,
+                onValueChange = { username = it },
+                label = stringResource(R.string.login_user_label),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
                 )
+            )
 
-                PasswordPrimaryTextField(
-                    modifier = Modifier.padding(bottom = 25.dp),
-                    value = password,
-                    onValueChange = {password = it},
-                    label = stringResource(R.string.login_password_label),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Send
-                    )
+            PasswordPrimaryTextField(
+                modifier = Modifier.padding(bottom = 25.dp),
+                value = password,
+                onValueChange = {password = it},
+                label = stringResource(R.string.login_password_label),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Send
                 )
+            )
 
-                PrimaryButton(
-                    text = stringResource(R.string.login_access_text),
-                    onClick = {
-                        onLogin(username, password)
-                    }
-                )
-            }
+            PrimaryButton(
+                text = stringResource(R.string.login_access_text),
+                onClick = {
+                    onLogin(username, password)
+                }
+            )
         }
     }
 }
