@@ -85,7 +85,14 @@ fun MainFlow(
                 HomeScreen(
                     modifier = Modifier.padding(innerPadding),
                     pendingOrders = mainViewModel.uiState.collectAsState().value.pendingOrders,
-                    claimedOrders = mainViewModel.uiState.collectAsState().value.claimedOrders
+                    claimedOrders = mainViewModel.uiState.collectAsState().value.claimedOrders,
+                    selectedOrderId = mainViewModel.uiState.collectAsState().value.selectedOrderId,
+                    onSelectOrder = mainViewModel::selectOrder,
+                    onClaimOrder = {
+                        mainViewModel.viewModelScope.launch {
+                            mainViewModel.claimOrder()
+                        }
+                    }
                 )
             }
 

@@ -59,10 +59,15 @@ class MainViewModel @Inject constructor (
         getClaimedOrders()
     }
 
-    suspend fun claimOrder(orderId: Int){
+    suspend fun claimOrder(){
+        if (_uiState.value.selectedOrderId == null){
+            _eventChannel.send(MainUiEvent.ShowToast(R.string.unexpected_error))
+            return
+        }
+
         try {
             orderRepository.claimOrder(
-                orderId = orderId,
+                orderId = _uiState.value.selectedOrderId!!,
                 employeeId = _uiState.value.employee.id
             )
 
@@ -95,6 +100,14 @@ class MainViewModel @Inject constructor (
             _eventChannel.send(MainUiEvent.ShowToast(R.string.success_send_incident))
         } catch (e: IOException) {
             _eventChannel.send(MainUiEvent.ShowToast(R.string.error_send_incident))
+        }
+    }
+
+    fun selectOrder(orderId: Int){
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedOrderId = orderId
+            )
         }
     }
 }

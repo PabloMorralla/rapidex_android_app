@@ -2,6 +2,8 @@
     <!--APP-->
     <string name="app_name">Rapidex</string>
     <string name="error_title">Error</string>
+    <string name="confirm_label">Confirm</string>
+    <string name="cancel_label">Cancel</string>
     <string name="unexpected_error">There was an unexpected error. Please contact your manager.</string>
 
     <!--LOGIN-->
