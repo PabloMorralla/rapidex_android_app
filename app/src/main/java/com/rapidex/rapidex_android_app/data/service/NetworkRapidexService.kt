@@ -1,6 +1,5 @@
 package com.rapidex.rapidex_android_app.data.service
 
-import com.rapidex.rapidex_android_app.data.api.ApiResponse
 import com.rapidex.rapidex_android_app.data.api.ApiService
 import com.rapidex.rapidex_android_app.data.model.Employee
 import com.rapidex.rapidex_android_app.data.model.Incident

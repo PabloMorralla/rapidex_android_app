@@ -1,5 +1,7 @@
 package com.rapidex.rapidex_android_app.hilt
 
+import com.rapidex.rapidex_android_app.data.api.RetrofitClient
+import com.rapidex.rapidex_android_app.data.service.NetworkRapidexService
 import com.rapidex.rapidex_android_app.data.service.RapidexService
 import com.rapidex.rapidex_android_app.data.service.TestRapidexService
 import com.rapidex.rapidex_android_app.domain.DefaultEmployeeRepository
@@ -20,7 +22,7 @@ class RapidexModule {
     @Provides
     @Singleton
     fun providesService(): RapidexService {
-        return TestRapidexService()
+        return NetworkRapidexService(RetrofitClient.apiService)
     }
 
     @Provides

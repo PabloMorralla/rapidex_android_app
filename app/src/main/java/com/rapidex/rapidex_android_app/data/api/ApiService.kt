@@ -14,10 +14,10 @@ interface ApiService {
     @GET("orders/pending")
     suspend fun getPendingOrders(): Response<List<Order>>
 
-    @GET("claimed/{employeeId}")
+    @GET("orders/claimed/{employeeId}")
     suspend fun getClaimedOrders(@Path("employeeId") employeeId: Int): Response<List<Order>>
 
-    @POST("claim/{orderId}/{employeeId}")
+    @POST("orders/claim/{orderId}/{employeeId}")
     suspend fun claimOrder(@Path("orderId") orderId: Int, @Path("employeeId") employeeId: Int): Response<Unit>
 
     @DELETE("orders/{orderId}")

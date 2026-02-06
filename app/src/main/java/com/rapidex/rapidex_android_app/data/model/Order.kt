@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class Order (
     @SerializedName("id") val id: Int,
     @SerializedName("employee") val employee: Employee? = null,
-    @SerializedName("prepDate") val preparationDate: LocalDateTime? = null,
-    @SerializedName("dispatchDate") val dispatchDate: LocalDateTime? = null,
+    @SerializedName("prepDate") val preparationDate: String? = null,
+    @SerializedName("dispatchDate") val dispatchDate: String? = null,
     @SerializedName("products") val products: List<Product>
 )

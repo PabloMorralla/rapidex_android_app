@@ -12,8 +12,9 @@ import java.util.concurrent.TimeUnit
  */
 object RetrofitClient {
 
-    // Base URL for the API
-    private const val BASE_URL = "https://localhost:8080/"
+    private const val HOST = "10.0.2.2"
+    private const val PORT = 8080
+    private const val BASE_URL = "http://$HOST:$PORT/api/"
 
     // Logging interceptor for debugging
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
