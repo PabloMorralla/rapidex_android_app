@@ -3,6 +3,8 @@ package com.rapidex.rapidex_android_app.ui.main
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,7 +32,9 @@ import com.rapidex.rapidex_android_app.ui.main.viewmodel.MainUiEvent
 import com.rapidex.rapidex_android_app.ui.main.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.rapidex.rapidex_android_app.ui.components.MainBottomNavBar
 
 @Composable
 fun MainFlow(
@@ -39,8 +43,13 @@ fun MainFlow(
     val currentContext by rememberUpdatedState(LocalContext.current)
     val mainViewModel: MainViewModel = hiltViewModel()
 
-    val navController = rememberNavController()
-    val backStackEntry by navController.currentBackStackEntryAsState()
+    val destinations = MainDestination.entries.toList()
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        pageCount = { MainDestination.entries.size }
+    )
+
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         mainViewModel.viewModelScope.launch {
@@ -53,7 +62,7 @@ fun MainFlow(
                     Toast.makeText(currentContext, currentContext.getString(event.stringRes), Toast.LENGTH_LONG).show()
                 }
                 is MainUiEvent.Navigate -> {
-                    navController.navigate(event.destination.route)
+                    pagerState.animateScrollToPage(event.destination.ordinal)
                 }
                 is MainUiEvent.GoToAuthFlow -> {
                     goToAuthFlow()
@@ -66,7 +75,7 @@ fun MainFlow(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             RapidexTopAppBar(
-                title = when(backStackEntry?.destination?.route){
+                title = when(destinations[pagerState.currentPage].route){
                     MainDestination.HOME.route -> stringResource(R.string.home_title)
                     MainDestination.DETAILS.route -> stringResource(R.string.details_title)
                     MainDestination.INCIDENT.route -> stringResource(R.string.incident_title)
@@ -75,15 +84,25 @@ fun MainFlow(
                 canNavigateBack = false,
                 onBackNavigate = {}
             )
+        },
+        bottomBar = {
+            MainBottomNavBar(
+                entries = destinations,
+                currentPageIndex = pagerState.currentPage,
+                onNavigate = { i ->
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(i)
+                    }
+                }
+            )
         }
     ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = MainDestination.HOME.route
-        ) {
-            composable(MainDestination.HOME.route) {
-                HomeScreen(
-                    modifier = Modifier.padding(innerPadding),
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.padding(innerPadding)
+        ) { page ->
+            when(page){
+                0 -> HomeScreen(
                     pendingOrders = mainViewModel.uiState.collectAsState().value.pendingOrders,
                     claimedOrders = mainViewModel.uiState.collectAsState().value.claimedOrders,
                     selectedOrderId = mainViewModel.uiState.collectAsState().value.selectedOrderId,
@@ -94,14 +113,10 @@ fun MainFlow(
                         }
                     }
                 )
-            }
 
-            composable(MainDestination.DETAILS.route) {
-                DetailsScreen()
-            }
+                1 -> DetailsScreen()
 
-            composable(MainDestination.INCIDENT.route) {
-                IncidentScreen()
+                2 -> IncidentScreen()
             }
         }
     }
