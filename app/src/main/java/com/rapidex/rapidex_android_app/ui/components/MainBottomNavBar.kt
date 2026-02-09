@@ -21,10 +21,10 @@ fun MainBottomNavBar (
                 icon = {
                     Icon(
                         imageVector = entry.icon,
-                        contentDescription = entry.title
+                        contentDescription = entry.label
                     )
                 },
-                label = { Text(entry.title) }
+                label = { Text(entry.label) }
             )
         }
     }
