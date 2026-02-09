@@ -44,10 +44,6 @@ fun MainFlow(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        mainViewModel.viewModelScope.launch {
-            mainViewModel.refreshOrders()
-        }
-
         mainViewModel.events.collect { event ->
             when (event) {
                 is MainUiEvent.ShowToast -> {
@@ -106,7 +102,10 @@ fun MainFlow(
                     }
                 )
 
-                MainDestination.DETAILS.ordinal -> DetailsScreen()
+                MainDestination.DETAILS.ordinal -> DetailsScreen(
+                    order = mainViewModel.getSelectedOrder(),
+                    getOrderStatus = mainViewModel::getOrderStatus
+                )
 
                 MainDestination.INCIDENT.ordinal -> IncidentScreen()
             }

@@ -1,8 +1,10 @@
 package com.rapidex.rapidex_android_app.ui.main.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.rapidex.rapidex_android_app.R
 import com.rapidex.rapidex_android_app.data.model.IncidentType
+import com.rapidex.rapidex_android_app.data.model.Order
 import com.rapidex.rapidex_android_app.domain.EmployeeRepository
 import com.rapidex.rapidex_android_app.domain.IncidentRepository
 import com.rapidex.rapidex_android_app.domain.OrderRepository
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 
@@ -22,6 +25,12 @@ class MainViewModel @Inject constructor (
     private val orderRepository: OrderRepository,
     private val incidentRepository: IncidentRepository
 ): ViewModel() {
+    init {
+        viewModelScope.launch {
+            refreshOrders()
+        }
+    }
+
     private val _uiState = MutableStateFlow(MainUiState(employee = employeeRepository.employee!!)) // TODO Please, do not cast nullable type to not-nullable type without checking its value first :)
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
@@ -109,5 +118,22 @@ class MainViewModel @Inject constructor (
                 selectedOrderId = orderId
             )
         }
+    }
+
+    fun getSelectedOrder(): Order? {
+        val selectedOrderId = _uiState.value.selectedOrderId
+
+        return _uiState.value.pendingOrders.find { it.id == selectedOrderId }
+            ?: _uiState.value.claimedOrders.find { it.id == selectedOrderId }
+    }
+
+    fun getOrderStatus(order: Order): OrderStatus {
+        return if (order.employee == null) OrderStatus.UNCLAIMED
+        else if ( order.products.all { it.done == true } ) OrderStatus.FINISHED
+        else OrderStatus.IN_PROCESS
+    }
+
+    fun markProductAsDone(orderId: Int, productIndex: Int){
+
     }
 }

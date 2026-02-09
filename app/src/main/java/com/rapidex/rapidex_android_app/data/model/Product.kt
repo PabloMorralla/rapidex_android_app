@@ -7,4 +7,5 @@ data class Product (
     @SerializedName("productName") val name: String,
     @SerializedName("productCategory") val category: String,
     @SerializedName("productDescription") val description: String? = null,
+    val done: Boolean? = null
 )
