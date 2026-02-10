@@ -70,14 +70,14 @@ class MainViewModel @Inject constructor (
     }
 
     suspend fun claimOrder(){
-        if (_uiState.value.selectedOrderId == null){
+        if (_uiState.value.selectedOrder == null){
             _eventChannel.send(MainUiEvent.ShowToast(R.string.unexpected_error))
             return
         }
 
         try {
             orderRepository.claimOrder(
-                orderId = _uiState.value.selectedOrderId!!,
+                orderId = _uiState.value.selectedOrder!!.id,
                 employeeId = _uiState.value.employee.id
             )
 
