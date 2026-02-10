@@ -34,6 +34,7 @@ fun MainFlow(
 ){
     val currentContext by rememberUpdatedState(LocalContext.current)
     val mainViewModel: MainViewModel = hiltViewModel()
+    val uiState by mainViewModel.uiState.collectAsState()
 
     val destinations = MainDestination.entries.toList()
     val pagerState = rememberPagerState(
@@ -91,9 +92,9 @@ fun MainFlow(
         ) { page ->
             when(page){
                 MainDestination.HOME.ordinal -> HomeScreen(
-                    pendingOrders = mainViewModel.uiState.collectAsState().value.pendingOrders,
-                    claimedOrders = mainViewModel.uiState.collectAsState().value.claimedOrders,
-                    selectedOrderId = mainViewModel.uiState.collectAsState().value.selectedOrderId,
+                    pendingOrders = uiState.pendingOrders,
+                    claimedOrders = uiState.claimedOrders,
+                    selectedOrder = uiState.selectedOrder,
                     onSelectOrder = mainViewModel::selectOrder,
                     onClaimOrder = {
                         mainViewModel.viewModelScope.launch {
@@ -103,8 +104,8 @@ fun MainFlow(
                 )
 
                 MainDestination.DETAILS.ordinal -> DetailsScreen(
-                    order = mainViewModel.getSelectedOrder(),
-                    getOrderStatus = mainViewModel::getOrderStatus
+                    order = uiState.selectedOrder,
+                    markProductDone = mainViewModel::toggleProductAsDone,
                 )
 
                 MainDestination.INCIDENT.ordinal -> IncidentScreen()

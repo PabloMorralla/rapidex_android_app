@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.rapidex.rapidex_android_app.R
 import com.rapidex.rapidex_android_app.data.model.IncidentType
 import com.rapidex.rapidex_android_app.data.model.Order
+import com.rapidex.rapidex_android_app.domain.OrderStatus
 import com.rapidex.rapidex_android_app.domain.EmployeeRepository
 import com.rapidex.rapidex_android_app.domain.IncidentRepository
 import com.rapidex.rapidex_android_app.domain.OrderRepository
@@ -114,26 +115,36 @@ class MainViewModel @Inject constructor (
 
     fun selectOrder(orderId: Int){
         _uiState.update { currentState ->
+            val order = currentState.claimedOrders.find { it.id == orderId }
+                ?: currentState.pendingOrders.find { it.id == orderId }
+
             currentState.copy(
-                selectedOrderId = orderId
+                selectedOrder = order
             )
         }
     }
 
-    fun getSelectedOrder(): Order? {
-        val selectedOrderId = _uiState.value.selectedOrderId
+    fun toggleProductAsDone(orderId: Int, productIndex: Int) {
+        _uiState.update { state ->
+            val updatedOrders = state.claimedOrders.map { order ->
+                if (order.id != orderId) return@map order
 
-        return _uiState.value.pendingOrders.find { it.id == selectedOrderId }
-            ?: _uiState.value.claimedOrders.find { it.id == selectedOrderId }
-    }
+                val updatedProducts = order.products.mapIndexed { index, product ->
+                    if (index == productIndex)
+                        product.copy(done = !product.done)
+                    else
+                        product
+                }
 
-    fun getOrderStatus(order: Order): OrderStatus {
-        return if (order.employee == null) OrderStatus.UNCLAIMED
-        else if ( order.products.all { it.done == true } ) OrderStatus.FINISHED
-        else OrderStatus.IN_PROCESS
-    }
+                order.copy(
+                    products = updatedProducts
+                )
+            }
 
-    fun markProductAsDone(orderId: Int, productIndex: Int){
-
+            state.copy(
+                claimedOrders = updatedOrders,
+                selectedOrder = updatedOrders.find { it.id == orderId }
+            )
+        }
     }
 }

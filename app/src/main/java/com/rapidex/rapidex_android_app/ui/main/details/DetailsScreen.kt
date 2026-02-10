@@ -1,11 +1,16 @@
 package com.rapidex.rapidex_android_app.ui.main.details
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,14 +21,14 @@ import androidx.compose.ui.unit.dp
 import com.rapidex.rapidex_android_app.R
 import com.rapidex.rapidex_android_app.data.model.Order
 import com.rapidex.rapidex_android_app.ui.components.ColumnCard
-import com.rapidex.rapidex_android_app.ui.components.RapidexAlertDialog
-import com.rapidex.rapidex_android_app.ui.main.viewmodel.OrderStatus
+import com.rapidex.rapidex_android_app.ui.components.ProductCard
+import com.rapidex.rapidex_android_app.domain.OrderStatus
 
 @Composable
 fun DetailsScreen (
     modifier: Modifier = Modifier,
     order: Order?,
-    getOrderStatus: (Order) -> OrderStatus
+    markProductDone: (Int, Int) -> Unit, // orderId, Index -> Unit
 ) {
     Column(
         modifier = modifier
@@ -83,12 +88,36 @@ fun DetailsScreen (
                     )
                     Spacer(modifier.weight(1f))
                     Text(
-                        text = when (getOrderStatus(order)) {
+                        text = when (order.status) {
                             OrderStatus.UNCLAIMED -> stringResource(R.string.details_order_status_unclaimed)
                             OrderStatus.IN_PROCESS -> stringResource(R.string.details_order_status_in_process)
                             OrderStatus.FINISHED -> stringResource(R.string.details_order_status_finished)
+                            else -> "ERROR"
                         },
                         style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+
+            Spacer(modifier.height(25.dp))
+
+            Text(
+                text = stringResource(R.string.details_order_products),
+                style = MaterialTheme.typography.titleLarge,
+            )
+
+            LazyColumn(
+                modifier = modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                itemsIndexed(order.products){ i, product ->
+                    ProductCard(
+                        modifier = Modifier
+                            .padding(bottom=25.dp)
+                            .clickable(onClick = {
+                                markProductDone(order.id, i)
+                            }),
+                        product = product,
                     )
                 }
             }

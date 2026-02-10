@@ -7,5 +7,6 @@ data class MainUiState (
     val employee: Employee,
     val pendingOrders: List<Order> = emptyList(),
     val claimedOrders: List<Order> = emptyList(),
-    val selectedOrderId: Int? = null
+    val selectedOrderId: Int? = null,
+    val selectedOrder: Order? = null
 )

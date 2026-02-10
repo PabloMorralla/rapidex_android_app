@@ -1,4 +1,4 @@
-package com.rapidex.rapidex_android_app.ui.main.viewmodel
+package com.rapidex.rapidex_android_app.domain
 
 enum class OrderStatus {
     UNCLAIMED,
