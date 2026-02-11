@@ -1,5 +1,11 @@
 package com.rapidex.rapidex_android_app.ui.main.incident
 
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +50,17 @@ fun IncidentScreen (
     var selectedTypeIndex by remember { mutableStateOf<Int?>(null) }
     var description by remember {mutableStateOf("")}
 
+    val infiniteTransition = rememberInfiniteTransition()
+    val buttonHorizontalPadding by
+        infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 10f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1000, easing = EaseInOut),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -61,7 +78,7 @@ fun IncidentScreen (
         else {
             ColumnCard {
                 Text(
-                    modifier = Modifier.padding(bottom=25.dp),
+                    modifier = Modifier.padding(bottom = 25.dp),
                     text = stringResource(R.string.incident_type),
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -99,7 +116,7 @@ fun IncidentScreen (
                 }
 
                 Text(
-                    modifier = Modifier.padding(bottom=25.dp),
+                    modifier = Modifier.padding(bottom = 25.dp),
                     text = stringResource(R.string.incident_description),
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -114,6 +131,8 @@ fun IncidentScreen (
                 )
 
                 PrimaryButton(
+                    modifier = Modifier
+                        .padding(horizontal = buttonHorizontalPadding.dp),
                     text = stringResource(R.string.report_incident),
                     onClick = {
                         onReportIncident(
@@ -121,7 +140,13 @@ fun IncidentScreen (
                             description,
                             order.id
                         )
-                    }
+                    },
+                    colors = ButtonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError,
+                        disabledContainerColor = MaterialTheme.colorScheme.error,
+                        disabledContentColor = MaterialTheme.colorScheme.onError,
+                    )
                 )
             }
         }

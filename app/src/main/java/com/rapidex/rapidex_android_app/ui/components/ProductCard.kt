@@ -1,5 +1,8 @@
 package com.rapidex.rapidex_android_app.ui.components
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -24,17 +27,30 @@ fun ProductCard(
 ) {
     val done = product.done
 
+    val containerColor = animateColorAsState(
+        targetValue =  if (done) MaterialTheme.colorScheme.tertiaryContainer
+            else MaterialTheme.colorScheme.primaryContainer,
+        animationSpec = tween(
+            durationMillis = 250,
+            easing = EaseInOut
+        )
+    )
+    val contentColor = animateColorAsState(
+        targetValue = if (done) MaterialTheme.colorScheme.onTertiaryContainer
+            else MaterialTheme.colorScheme.onPrimaryContainer,
+        animationSpec = tween(
+            durationMillis = 250,
+            easing = EaseInOut
+        )
+    )
+
     RowCard (
         modifier = modifier,
         colors = CardColors(
-            containerColor = if (done) MaterialTheme.colorScheme.tertiaryContainer
-                else MaterialTheme.colorScheme.primaryContainer,
-            contentColor = if (done) MaterialTheme.colorScheme.onTertiaryContainer
-                else MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledContainerColor = if (done) MaterialTheme.colorScheme.tertiaryContainer
-                else MaterialTheme.colorScheme.primaryContainer,
-            disabledContentColor = if (done) MaterialTheme.colorScheme.onTertiaryContainer
-                else MaterialTheme.colorScheme.onPrimaryContainer,
+            containerColor = containerColor.value,
+            contentColor = contentColor.value,
+            disabledContainerColor = containerColor.value,
+            disabledContentColor = contentColor.value
         )
     ) {
         Icon(
