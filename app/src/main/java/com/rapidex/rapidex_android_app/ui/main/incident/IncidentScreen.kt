@@ -84,8 +84,8 @@ fun IncidentScreen (
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
-                        .padding(bottom=25.dp),
+                        .weight(2f)
+                        .padding(bottom = 25.dp),
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.spacedBy(25.dp)
                 ) {
@@ -96,7 +96,7 @@ fun IncidentScreen (
                             modifier = Modifier
                                 .border(
                                     width = 3.dp,
-                                    color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                                    color = if (selected) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
                                     shape = RoundedCornerShape(8.dp)
                                 )
                                 .clickable(
@@ -124,6 +124,7 @@ fun IncidentScreen (
                     onValueChange = { description = it },
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(bottom = 25.dp)
                         .weight(1f),
                     maxLines = Int.MAX_VALUE
                 )

@@ -111,6 +111,7 @@ fun DetailsScreen (
                 LazyColumn(
                     modifier = modifier
                         .fillMaxWidth()
+                        .padding(bottom = 25.dp)
                         .weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
