@@ -19,6 +19,7 @@
     <string name="home_pending_orders_label">Pending Orders</string>
     <string name="home_claimed_orders_label">Claimed Orders</string>
     <string name="order_id_format">ORD-%1$03d</string>
+    <string name="refresh_orders">Refresh Orders</string>
     <string name="success_claim_order">Order claimed successfully</string>
     <string name="error_loading_pending_orders">There was an unexpected error loading pending orders. Please contact your manager.</string>
     <string name="error_loading_claimed_orders">There was an unexpected error loading claimed orders. Please contact your manager.</string>

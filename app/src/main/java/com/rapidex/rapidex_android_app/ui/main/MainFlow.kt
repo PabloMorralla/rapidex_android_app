@@ -100,6 +100,11 @@ fun MainFlow(
                         mainViewModel.viewModelScope.launch {
                             mainViewModel.claimOrder()
                         }
+                    },
+                    onRefreshOrders = {
+                        mainViewModel.viewModelScope.launch {
+                            mainViewModel.refreshOrders()
+                        }
                     }
                 )
 

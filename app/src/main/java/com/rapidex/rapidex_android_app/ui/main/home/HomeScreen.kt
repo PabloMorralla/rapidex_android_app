@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.rapidex.rapidex_android_app.R
 import com.rapidex.rapidex_android_app.data.model.Order
 import com.rapidex.rapidex_android_app.ui.components.OrderCard
+import com.rapidex.rapidex_android_app.ui.components.PrimaryButton
 import com.rapidex.rapidex_android_app.ui.components.RapidexAlertDialog
 
 @Composable
@@ -34,6 +35,7 @@ fun HomeScreen(
     selectedOrder: Order?,
     onSelectOrder: (Int)->Unit,
     onClaimOrder: ()->Unit,
+    onRefreshOrders: ()->Unit
 ){
     var showClaimOrderDialog by remember { mutableStateOf(false) }
 
@@ -107,5 +109,10 @@ fun HomeScreen(
                 )
             }
         }
+
+        PrimaryButton(
+            text = stringResource(R.string.refresh_orders),
+            onClick = onRefreshOrders
+        )
     }
 }
