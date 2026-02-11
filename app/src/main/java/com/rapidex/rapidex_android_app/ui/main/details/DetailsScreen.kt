@@ -23,6 +23,7 @@ import com.rapidex.rapidex_android_app.data.model.Order
 import com.rapidex.rapidex_android_app.ui.components.ColumnCard
 import com.rapidex.rapidex_android_app.ui.components.ProductCard
 import com.rapidex.rapidex_android_app.domain.OrderStatus
+import com.rapidex.rapidex_android_app.ui.components.DraggableMessageCard
 import com.rapidex.rapidex_android_app.ui.components.PrimaryButton
 
 @Composable
@@ -38,12 +39,9 @@ fun DetailsScreen (
             .fillMaxSize(),
     ) {
         if (order == null){
-            ColumnCard {
-                Text(
-                    text = stringResource(R.string.details_no_order_selected),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
+            DraggableMessageCard (
+                text = stringResource(R.string.details_no_order_selected),
+            )
         }
         else {
             ColumnCard {
