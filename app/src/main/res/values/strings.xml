@@ -42,6 +42,11 @@
 
     <!--SEND INCIDENT-->
     <string name="incident_title">Send an Incident</string>
-    <string name="success_send_incident">Incident was sent successfully and you were deassigned from the order</string>
+    <string name="incident_type">Type</string>
+    <string name="incident_description">Description</string>
+    <string name="report_incident">Report Incident</string>
+    <string name="incident_no_order_selected">Here you can notify if something is wrong. To report and incident, tap on an order in the Home Screen first.</string>
+    <string name="success_send_incident">Incident was sent successfully</string>
+    <string name="error_no_type_selected">Please select a type to send the incident</string>
     <string name="error_send_incident">There was an unexpected error sending the incident. Please contact your manager.</string>
 </resources>

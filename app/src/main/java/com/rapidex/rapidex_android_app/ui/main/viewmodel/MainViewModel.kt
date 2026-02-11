@@ -119,7 +119,12 @@ class MainViewModel @Inject constructor (
         }
     }
 
-    suspend fun sendIncident(type: IncidentType, description: String, orderId: Int){
+    suspend fun sendIncident(type: IncidentType?, description: String, orderId: Int){
+        if (type == null){
+            _eventChannel.send(MainUiEvent.ShowToast(R.string.error_no_type_selected))
+            return
+        }
+
         try {
             incidentRepository.sendIncident(type, description, orderId)
 

@@ -113,7 +113,18 @@ fun MainFlow(
                     }
                 )
 
-                MainDestination.INCIDENT.ordinal -> IncidentScreen()
+                MainDestination.INCIDENT.ordinal -> IncidentScreen(
+                    order = uiState.selectedOrder,
+                    onReportIncident = { type, description, orderId ->
+                        mainViewModel.viewModelScope.launch {
+                            mainViewModel.sendIncident(
+                                type,
+                                description,
+                                orderId
+                            )
+                        }
+                    }
+                )
             }
         }
     }
