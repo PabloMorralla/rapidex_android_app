@@ -7,5 +7,6 @@ data class Product (
     @SerializedName("productName") val name: String,
     @SerializedName("productCategory") val category: String,
     @SerializedName("productDescription") val description: String? = null,
+    @SerializedName("imageUrl") val imageUrl: String? = null,
     var done: Boolean = false
 )

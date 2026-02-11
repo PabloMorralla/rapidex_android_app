@@ -93,6 +93,9 @@ dependencies {
     //Foundation
     implementation("androidx.compose.foundation:foundation")
 
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.compose.ui.tooling)
