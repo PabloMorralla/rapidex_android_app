@@ -11,6 +11,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -53,6 +55,13 @@ fun RapidexTopAppBar(
                     .width(150.dp),
                 contentScale = ContentScale.Fit
             )
-        }
+        },
+        colors = TopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            scrolledContainerColor = TopAppBarDefaults.topAppBarColors().scrolledContainerColor,
+            navigationIconContentColor = TopAppBarDefaults.topAppBarColors().navigationIconContentColor,
+            actionIconContentColor = TopAppBarDefaults.topAppBarColors().actionIconContentColor,
+        )
     )
 }

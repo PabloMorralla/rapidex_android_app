@@ -4,16 +4,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import com.rapidex.rapidex_android_app.domain.OrderStatus
 
 @Composable
 fun PrimaryButton (
     modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit,
-    colors: ButtonColors = ButtonDefaults.buttonColors()
+    colors: ButtonColors = ButtonColors(
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+    )
 ) {
     Button(
         modifier = modifier
@@ -22,7 +30,8 @@ fun PrimaryButton (
         colors = colors
     ) {
         Text(
-            text = text
+            text = text,
+            style = MaterialTheme.typography.labelLarge
         )
     }
 }

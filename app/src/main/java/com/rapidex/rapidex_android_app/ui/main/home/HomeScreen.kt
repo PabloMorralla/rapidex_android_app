@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.rapidex.rapidex_android_app.R
 import com.rapidex.rapidex_android_app.data.model.Order
 import com.rapidex.rapidex_android_app.ui.components.OrderCard
+import com.rapidex.rapidex_android_app.ui.components.PrimaryButton
 import com.rapidex.rapidex_android_app.ui.components.RapidexAlertDialog
 
 @Composable
@@ -34,6 +35,7 @@ fun HomeScreen(
     selectedOrder: Order?,
     onSelectOrder: (Int)->Unit,
     onClaimOrder: ()->Unit,
+    onRefreshOrders: ()->Unit
 ){
     var showClaimOrderDialog by remember { mutableStateOf(false) }
 
@@ -62,21 +64,31 @@ fun HomeScreen(
             style = MaterialTheme.typography.titleLarge,
         )
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ) {
-            items (claimedOrders) { order ->
-                val isSelected = (order == selectedOrder)
+        if (claimedOrders.isEmpty()){
+            Text(
+                modifier = Modifier.weight(1f),
+                text = stringResource(R.string.nothing_to_see),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.scrim
+            )
+        }
+        else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                items (claimedOrders) { order ->
+                    val isSelected = (order == selectedOrder)
 
-                OrderCard(
-                    modifier = Modifier
-                        .padding(bottom = 25.dp)
-                        .clickable{onSelectOrder(order.id)},
-                    order = order,
-                    isSelected = isSelected
-                )
+                    OrderCard(
+                        modifier = Modifier
+                            .padding(bottom = 25.dp)
+                            .clickable{onSelectOrder(order.id)},
+                        order = order,
+                        isSelected = isSelected
+                    )
+                }
             }
         }
 
@@ -84,28 +96,43 @@ fun HomeScreen(
 
         Text(
             text = stringResource(R.string.home_pending_orders_label),
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleLarge
         )
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ) {
-            items (pendingOrders) { order ->
-                val isSelected = (order == selectedOrder)
+        if (pendingOrders.isEmpty()) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = stringResource(R.string.nothing_to_see),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.scrim
+            )
+        }
+        else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                items(pendingOrders) { order ->
+                    val isSelected = (order == selectedOrder)
 
-                OrderCard(
-                    modifier = Modifier
-                        .padding(bottom = 25.dp)
-                        .clickable{
-                            onSelectOrder(order.id)
-                            showClaimOrderDialog = true
-                        },
-                    order = order,
-                    isSelected = isSelected
-                )
+                    OrderCard(
+                        modifier = Modifier
+                            .padding(bottom = 25.dp)
+                            .clickable {
+                                onSelectOrder(order.id)
+                                showClaimOrderDialog = true
+                            },
+                        order = order,
+                        isSelected = isSelected
+                    )
+                }
             }
         }
+
+        PrimaryButton(
+            text = stringResource(R.string.refresh_orders),
+            onClick = onRefreshOrders
+        )
     }
 }
