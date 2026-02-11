@@ -1,4 +1,4 @@
-package com.example.compose
+package com.rapidex.rapidex_android_app.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF994700)
