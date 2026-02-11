@@ -1,6 +1,5 @@
 package com.rapidex.rapidex_android_app.ui.main.details
 
-import android.graphics.Color
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,8 +29,8 @@ import com.rapidex.rapidex_android_app.ui.components.PrimaryButton
 fun DetailsScreen (
     modifier: Modifier = Modifier,
     order: Order?,
-    onMarkProductDone: (Int, Int) -> Unit, // orderId, Index -> Unit
-    onFinishOrder: (Int) -> Unit // orderId -> Unit
+    onMarkProductDone: (orderId: Int, index: Int) -> Unit,
+    onFinishOrder: (orderId: Int) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -132,7 +130,17 @@ fun DetailsScreen (
 
                 PrimaryButton(
                     text = if (order.status == OrderStatus.FINISHED) stringResource(R.string.details_finish_order)
-                    else stringResource(R.string.details_yet_to_finish_order),
+                        else stringResource(R.string.details_yet_to_finish_order),
+                    colors = ButtonColors(
+                        containerColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.tertiaryContainer
+                            else MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.onTertiaryContainer
+                            else MaterialTheme.colorScheme.onPrimaryContainer,
+                        disabledContainerColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.tertiaryContainer
+                            else MaterialTheme.colorScheme.primaryContainer,
+                        disabledContentColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.onTertiaryContainer
+                            else MaterialTheme.colorScheme.onPrimaryContainer,
+                    ),
                     onClick = { onFinishOrder(order.id) }
                 )
             }

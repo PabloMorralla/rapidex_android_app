@@ -2,6 +2,7 @@ package com.rapidex.rapidex_android_app.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.rapidex.rapidex_android_app.R
@@ -46,7 +48,10 @@ fun RapidexTopAppBar(
             Image(
                 painter = painterResource(R.drawable.logo_rapidex_trinidad),
                 contentDescription = null,
-                modifier = Modifier.padding(end = 12.dp)
+                modifier = Modifier
+                    .padding(end = 12.dp)
+                    .width(150.dp),
+                contentScale = ContentScale.Fit
             )
         }
     )
