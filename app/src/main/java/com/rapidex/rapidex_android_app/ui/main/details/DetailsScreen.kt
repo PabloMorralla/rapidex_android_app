@@ -1,6 +1,6 @@
 package com.rapidex.rapidex_android_app.ui.main.details
 
-import androidx.compose.foundation.background
+import android.graphics.Color
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,12 +25,14 @@ import com.rapidex.rapidex_android_app.data.model.Order
 import com.rapidex.rapidex_android_app.ui.components.ColumnCard
 import com.rapidex.rapidex_android_app.ui.components.ProductCard
 import com.rapidex.rapidex_android_app.domain.OrderStatus
+import com.rapidex.rapidex_android_app.ui.components.PrimaryButton
 
 @Composable
 fun DetailsScreen (
     modifier: Modifier = Modifier,
     order: Order?,
-    markProductDone: (Int, Int) -> Unit, // orderId, Index -> Unit
+    onMarkProductDone: (Int, Int) -> Unit, // orderId, Index -> Unit
+    onFinishOrder: (Int) -> Unit // orderId -> Unit
 ) {
     Column(
         modifier = modifier
@@ -101,25 +105,46 @@ fun DetailsScreen (
 
             Spacer(modifier.height(25.dp))
 
-            Text(
-                text = stringResource(R.string.details_order_products),
-                style = MaterialTheme.typography.titleLarge,
-            )
+            if (order.status != OrderStatus.UNCLAIMED) {
 
-            LazyColumn(
-                modifier = modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                itemsIndexed(order.products){ i, product ->
-                    ProductCard(
-                        modifier = Modifier
-                            .padding(bottom=25.dp)
-                            .clickable(onClick = {
-                                markProductDone(order.id, i)
-                            }),
-                        product = product,
-                    )
+                Text(
+                    text = stringResource(R.string.details_order_products),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+
+                LazyColumn(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    itemsIndexed(order.products) { i, product ->
+                        ProductCard(
+                            modifier = Modifier
+                                .padding(bottom = 25.dp)
+                                .clickable(onClick = {
+                                    onMarkProductDone(order.id, i)
+                                }),
+                            product = product,
+                        )
+                    }
                 }
+
+                PrimaryButton(
+                    text = if (order.status == OrderStatus.FINISHED) stringResource(R.string.details_finish_order)
+                    else stringResource(R.string.details_yet_to_finish_order),
+                    onClick = { onFinishOrder(order.id) },
+                    colors = ButtonColors(
+                        containerColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.tertiaryContainer
+                        else MaterialTheme.colorScheme.errorContainer,
+                        contentColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.onTertiaryContainer
+                        else MaterialTheme.colorScheme.onErrorContainer,
+                        disabledContainerColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.tertiaryContainer
+                        else MaterialTheme.colorScheme.errorContainer,
+                        disabledContentColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.onTertiaryContainer
+                        else MaterialTheme.colorScheme.onErrorContainer
+                    )
+                )
             }
         }
     }

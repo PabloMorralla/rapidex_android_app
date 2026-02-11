@@ -105,7 +105,12 @@ fun MainFlow(
 
                 MainDestination.DETAILS.ordinal -> DetailsScreen(
                     order = uiState.selectedOrder,
-                    markProductDone = mainViewModel::toggleProductAsDone,
+                    onMarkProductDone = mainViewModel::toggleProductAsDone,
+                    onFinishOrder = { orderId ->
+                        mainViewModel.viewModelScope.launch {
+                            mainViewModel.orderDone(orderId)
+                        }
+                    }
                 )
 
                 MainDestination.INCIDENT.ordinal -> IncidentScreen()

@@ -34,8 +34,10 @@
     <string name="details_order_status_in_process">In Process</string>
     <string name="details_order_status_finished">Completed</string>
     <string name="details_no_order_selected">Here you can see the details of your selected order. To select an order, tap on it in the Home Screen.</string>
-    <string name="detials_order_products">Products</string>
+    <string name="details_finish_order">Finish Order</string>
+    <string name="details_yet_to_finish_order">Get all the products to finish the order</string>
     <string name="success_order_done">Order was marked as done successfully</string>
+    <string name="error_order_unfinished">You need to collect all products to finish the order.</string>
     <string name="error_order_done">There was an unexpected error marking the order as done. Please contact your manager.</string>
 
     <!--SEND INCIDENT-->

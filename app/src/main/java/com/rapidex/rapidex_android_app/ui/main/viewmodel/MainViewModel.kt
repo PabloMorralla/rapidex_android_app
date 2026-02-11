@@ -38,7 +38,7 @@ class MainViewModel @Inject constructor (
     private val _eventChannel = Channel<MainUiEvent>()
     val events = _eventChannel.receiveAsFlow()
 
-    suspend fun getPendingOrders(){
+    private suspend fun getPendingOrders(){
         try {
             val pendingOrders = orderRepository.getPendingOrders()
             _uiState.update { currentState ->
@@ -51,7 +51,7 @@ class MainViewModel @Inject constructor (
             _eventChannel.send(MainUiEvent.ShowToast(R.string.error_loading_pending_orders))
         }
     }
-    suspend fun getClaimedOrders(){
+    private suspend fun getClaimedOrders(){
         try {
             val claimedOrders = orderRepository.getClaimedOrders(_uiState.value.employee.id)
             _uiState.update { currentState ->
@@ -67,6 +67,12 @@ class MainViewModel @Inject constructor (
     suspend fun refreshOrders(){
         getPendingOrders()
         getClaimedOrders()
+
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedOrder = null
+            )
+        }
     }
 
     suspend fun claimOrder(){
@@ -89,6 +95,18 @@ class MainViewModel @Inject constructor (
         }
     }
     suspend fun orderDone(orderId: Int) {
+        val order = _uiState.value.claimedOrders.find { it.id == orderId }
+
+        if (order == null) {
+            _eventChannel.send(MainUiEvent.ShowToast(R.string.error_order_done))
+            return
+        }
+
+        if (order.status != OrderStatus.FINISHED){
+            _eventChannel.send(MainUiEvent.ShowToast(R.string.error_order_unfinished))
+            return
+        }
+
         try {
             orderRepository.orderDone(orderId)
 
@@ -123,7 +141,6 @@ class MainViewModel @Inject constructor (
             )
         }
     }
-
     fun toggleProductAsDone(orderId: Int, productIndex: Int) {
         _uiState.update { state ->
             val updatedOrders = state.claimedOrders.map { order ->
@@ -136,8 +153,12 @@ class MainViewModel @Inject constructor (
                         product
                 }
 
+                val updatedStatus = if (updatedProducts.all{it.done}) OrderStatus.FINISHED
+                    else OrderStatus.IN_PROCESS
+
                 order.copy(
-                    products = updatedProducts
+                    products = updatedProducts,
+                    status = updatedStatus
                 )
             }
 
