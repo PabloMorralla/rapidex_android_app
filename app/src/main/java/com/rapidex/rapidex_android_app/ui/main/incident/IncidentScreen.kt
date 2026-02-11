@@ -38,6 +38,7 @@ import com.rapidex.rapidex_android_app.R
 import com.rapidex.rapidex_android_app.data.model.IncidentType
 import com.rapidex.rapidex_android_app.data.model.Order
 import com.rapidex.rapidex_android_app.ui.components.ColumnCard
+import com.rapidex.rapidex_android_app.ui.components.DraggableMessageCard
 import com.rapidex.rapidex_android_app.ui.components.PrimaryButton
 import com.rapidex.rapidex_android_app.ui.components.RowCard
 
@@ -68,12 +69,9 @@ fun IncidentScreen (
         contentAlignment = Alignment.Center
     ) {
         if (order == null){
-            ColumnCard {
-                Text(
-                    text = stringResource(R.string.incident_no_order_selected),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
+            DraggableMessageCard(
+                text = stringResource(R.string.incident_no_order_selected)
+            )
         }
         else {
             ColumnCard {

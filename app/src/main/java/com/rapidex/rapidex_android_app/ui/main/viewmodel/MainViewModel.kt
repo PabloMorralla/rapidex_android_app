@@ -141,6 +141,15 @@ class MainViewModel @Inject constructor (
             val order = currentState.claimedOrders.find { it.id == orderId }
                 ?: currentState.pendingOrders.find { it.id == orderId }
 
+            if (order == null) {
+                viewModelScope.launch{ _eventChannel.send(MainUiEvent.ShowToast(R.string.unexpected_error)) }
+                return
+            }
+
+            if (order.status != OrderStatus.UNCLAIMED) {
+                viewModelScope.launch { _eventChannel.send(MainUiEvent.Navigate(MainDestination.DETAILS)) }
+            }
+
             currentState.copy(
                 selectedOrder = order
             )
