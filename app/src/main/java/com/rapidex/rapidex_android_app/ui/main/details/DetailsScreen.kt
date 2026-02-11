@@ -133,17 +133,7 @@ fun DetailsScreen (
                 PrimaryButton(
                     text = if (order.status == OrderStatus.FINISHED) stringResource(R.string.details_finish_order)
                     else stringResource(R.string.details_yet_to_finish_order),
-                    onClick = { onFinishOrder(order.id) },
-                    colors = ButtonColors(
-                        containerColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.tertiaryContainer
-                        else MaterialTheme.colorScheme.errorContainer,
-                        contentColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.onTertiaryContainer
-                        else MaterialTheme.colorScheme.onErrorContainer,
-                        disabledContainerColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.tertiaryContainer
-                        else MaterialTheme.colorScheme.errorContainer,
-                        disabledContentColor = if (order.status == OrderStatus.FINISHED) MaterialTheme.colorScheme.onTertiaryContainer
-                        else MaterialTheme.colorScheme.onErrorContainer
-                    )
+                    onClick = { onFinishOrder(order.id) }
                 )
             }
         }
