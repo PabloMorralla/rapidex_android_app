@@ -7,11 +7,10 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class MainDestination (
-    val route: String,
-    val title: String,
+    val label: String,
     val icon: ImageVector
 ) {
-    HOME("Home", "Home", Icons.Default.Home),
-    DETAILS("Details", "Details", Icons.Default.Build),
-    INCIDENT("Incident", "Incident", Icons.Default.Warning)
+    HOME("Home", Icons.Default.Home),
+    DETAILS("Details", Icons.Default.Build),
+    INCIDENT("Incident", Icons.Default.Warning)
 }

@@ -15,14 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.rapidex.rapidex_android_app.R
-import com.rapidex.rapidex_android_app.ui.auth.login.LoginScreen
-import com.rapidex.rapidex_android_app.ui.auth.viewmodel.AuthDestination
-import com.rapidex.rapidex_android_app.ui.auth.viewmodel.AuthUiEvent
-import com.rapidex.rapidex_android_app.ui.auth.viewmodel.AuthViewModel
 import com.rapidex.rapidex_android_app.ui.components.RapidexTopAppBar
 import com.rapidex.rapidex_android_app.ui.main.details.DetailsScreen
 import com.rapidex.rapidex_android_app.ui.main.home.HomeScreen
@@ -33,7 +26,6 @@ import com.rapidex.rapidex_android_app.ui.main.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.rapidex.rapidex_android_app.ui.components.MainBottomNavBar
 
 @Composable
@@ -42,6 +34,7 @@ fun MainFlow(
 ){
     val currentContext by rememberUpdatedState(LocalContext.current)
     val mainViewModel: MainViewModel = hiltViewModel()
+    val uiState by mainViewModel.uiState.collectAsState()
 
     val destinations = MainDestination.entries.toList()
     val pagerState = rememberPagerState(
@@ -52,10 +45,6 @@ fun MainFlow(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        mainViewModel.viewModelScope.launch {
-            mainViewModel.refreshOrders()
-        }
-
         mainViewModel.events.collect { event ->
             when (event) {
                 is MainUiEvent.ShowToast -> {
@@ -75,10 +64,10 @@ fun MainFlow(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             RapidexTopAppBar(
-                title = when(destinations[pagerState.currentPage].route){
-                    MainDestination.HOME.route -> stringResource(R.string.home_title)
-                    MainDestination.DETAILS.route -> stringResource(R.string.details_title)
-                    MainDestination.INCIDENT.route -> stringResource(R.string.incident_title)
+                title = when(destinations[pagerState.currentPage].label){
+                    MainDestination.HOME.label -> stringResource(R.string.home_title)
+                    MainDestination.DETAILS.label -> stringResource(R.string.details_title)
+                    MainDestination.INCIDENT.label -> stringResource(R.string.incident_title)
                     else -> stringResource(R.string.error_title)
                 },
                 canNavigateBack = false,
@@ -102,10 +91,10 @@ fun MainFlow(
             modifier = Modifier.padding(innerPadding)
         ) { page ->
             when(page){
-                0 -> HomeScreen(
-                    pendingOrders = mainViewModel.uiState.collectAsState().value.pendingOrders,
-                    claimedOrders = mainViewModel.uiState.collectAsState().value.claimedOrders,
-                    selectedOrderId = mainViewModel.uiState.collectAsState().value.selectedOrderId,
+                MainDestination.HOME.ordinal -> HomeScreen(
+                    pendingOrders = uiState.pendingOrders,
+                    claimedOrders = uiState.claimedOrders,
+                    selectedOrder = uiState.selectedOrder,
                     onSelectOrder = mainViewModel::selectOrder,
                     onClaimOrder = {
                         mainViewModel.viewModelScope.launch {
@@ -114,9 +103,17 @@ fun MainFlow(
                     }
                 )
 
-                1 -> DetailsScreen()
+                MainDestination.DETAILS.ordinal -> DetailsScreen(
+                    order = uiState.selectedOrder,
+                    onMarkProductDone = mainViewModel::toggleProductAsDone,
+                    onFinishOrder = { orderId ->
+                        mainViewModel.viewModelScope.launch {
+                            mainViewModel.orderDone(orderId)
+                        }
+                    }
+                )
 
-                2 -> IncidentScreen()
+                MainDestination.INCIDENT.ordinal -> IncidentScreen()
             }
         }
     }

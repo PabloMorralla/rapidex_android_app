@@ -31,13 +31,13 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     pendingOrders: List<Order>,
     claimedOrders: List<Order>,
-    selectedOrderId: Int?,
+    selectedOrder: Order?,
     onSelectOrder: (Int)->Unit,
     onClaimOrder: ()->Unit,
 ){
     var showClaimOrderDialog by remember { mutableStateOf(false) }
 
-    if (showClaimOrderDialog && selectedOrderId != null) {
+    if (showClaimOrderDialog && selectedOrder?.id != null) {
         RapidexAlertDialog(
             onCancel = { showClaimOrderDialog = false },
             onConfirm = {
@@ -46,7 +46,7 @@ fun HomeScreen(
             },
             title = "Do you want to claim Order " + stringResource(
                 R.string.order_id_format,
-                selectedOrderId
+                selectedOrder.id
             ) + "?",
             text = null
         )
@@ -68,7 +68,7 @@ fun HomeScreen(
                 .weight(1f)
         ) {
             items (claimedOrders) { order ->
-                val isSelected = (order.id == selectedOrderId)
+                val isSelected = (order == selectedOrder)
 
                 OrderCard(
                     modifier = Modifier
@@ -93,7 +93,7 @@ fun HomeScreen(
                 .weight(1f)
         ) {
             items (pendingOrders) { order ->
-                val isSelected = (order.id == selectedOrderId)
+                val isSelected = (order == selectedOrder)
 
                 OrderCard(
                     modifier = Modifier
